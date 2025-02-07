@@ -30,3 +30,22 @@ if uploaded_file is not None:
     fig.update_layout(bargap=0.05)
 
     st.plotly_chart(fig, use_container_width=True)
+
+    # Affichage des carrés de couleur
+    st.subheader("📌 Indicateur de production de tags")
+    
+    def get_color(tag_count):
+        if tag_count < 500:
+            return "🔴"
+        elif 500 <= tag_count <= 1000:
+            return "🟡"
+        else:
+            return "🟢"
+
+    # Création d'une colonne avec les couleurs
+    count_df["Status"] = count_df["Tag Count"].apply(get_color)
+
+    # Affichage des résultats sous forme de tableau coloré
+    st.dataframe(count_df.style.applymap(lambda x: "color: white; background-color: red" if x == "🔴" else 
+                                                  "color: black; background-color: yellow" if x == "🟡" else 
+                                                  "color: white; background-color: green" if x == "🟢" else ""))
