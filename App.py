@@ -6,7 +6,7 @@ import plotly.express as px
 @st.cache_data
 def load_data(file):
     df = pd.read_csv(file)
-    df["Timestamp"] = pd.to_datetime(df["Timestamp"])  # Convertir en datetime
+    df["timestamp"] = pd.to_datetime(df["timestamp"])  # Convertir en datetime
     return df
 
 # Interface Streamlit
@@ -19,13 +19,13 @@ if uploaded_file is not None:
     df = load_data(uploaded_file)
 
     # Grouper par périodes de 5 minutes
-    df["Time Interval"] = df["Timestamp"].dt.floor("5T")
-    count_df = df.groupby("Time Interval").size().reset_index(name="Tag Count")
+    df["Time Interval"] = df["timestamp"].dt.floor("5T")
+    count_df = df.groupby("Time Interval").size().reset_index(name="tagNumber")
 
     # Afficher un histogramme interactif avec Plotly
-    fig = px.bar(count_df, x="Time Interval", y="Tag Count", title="Nombre de tags produits toutes les 5 minutes",
-                 labels={"Time Interval": "Temps", "Tag Count": "Nombre de tags"},
-                 color="Tag Count")
+    fig = px.bar(count_df, x="Time Interval", y="tagNumber", title="Nombre de tags produits toutes les 5 minutes",
+                 labels={"Time Interval": "Temps", "tagNumber": "Nombre de tags"},
+                 color="tagNumber")
     
     fig.update_layout(bargap=0.05)
 
@@ -43,7 +43,7 @@ if uploaded_file is not None:
             return "🟢"
 
     # Création d'une colonne avec les couleurs
-    count_df["Status"] = count_df["Tag Count"].apply(get_color)
+    count_df["Status"] = count_df["tagNumber"].apply(get_color)
 
     # Affichage des résultats sous forme de tableau coloré
     st.dataframe(count_df.style.applymap(lambda x: "color: white; background-color: red" if x == "🔴" else 
