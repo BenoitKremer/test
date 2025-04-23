@@ -1,3 +1,5 @@
+import toml
+import os
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -26,7 +28,7 @@ choixShift = st.selectbox("Choisissez une équipe :", shift)
 choixMachine = st.selectbox("Choisissez une machine :", machines)
 
 # Upload de fichier CSV
-uploaded_file = f"T:\\tagsurance\\Archives données machines\\{choixMachine}\\JOBS_{date_formatee}_{choixShift}.csv"
+uploaded_file = os.path.join(base_dir, choixMachine, f"JOBS_{date_formatee}_{choixShift}.csv")
 
 # Si le bouton est appuyé on applique les filtres
 if st.button("Appliquer les filtres"):
