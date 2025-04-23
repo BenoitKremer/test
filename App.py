@@ -21,6 +21,9 @@ shift = ["Jour", "Nuit"]
 # Interface Streamlit
 st.title("📊 Analyse de production de tags par tranche de 5min")
 
+config = toml.load("config.toml")
+base_dir = config['paths']['base_dir']
+
 # Sélection des filtres
 date_selectionnee = st.date_input("Choisissez une date :", datetime.date.today())
 date_formatee = date_selectionnee.strftime("%d_%m_%Y")
