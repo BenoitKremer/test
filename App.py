@@ -1,10 +1,10 @@
 import toml
-import os
 import streamlit as st
 import pandas as pd
 import plotly.express as px
 import datetime
 import logging
+from pathlib import Path
 from datetime import timedelta
 
 # Fonction pour charger les données CSV
@@ -21,7 +21,7 @@ shift = ["Jour", "Nuit"]
 # Interface Streamlit
 st.title("📊 Analyse de production de tags par tranche de 5min")
 
-base_dir = st.secrets['paths']['base_dir']
+base_dir = Path(st.secrets['paths']['base_dir'])
 
 # Sélection des filtres
 date_selectionnee = st.date_input("Choisissez une date :", datetime.date.today())
@@ -30,7 +30,7 @@ choixShift = st.selectbox("Choisissez une équipe :", shift)
 choixMachine = st.selectbox("Choisissez une machine :", machines)
 
 # Upload de fichier CSV
-uploaded_file = os.path.join(base_dir, choixMachine, f"JOBS_{date_formatee}_{choixShift}.csv")
+uploaded_file = base_dir / choixMachine / f"JOBS_{date_formatee}_{choixShift}.csv"
 
 # Si le bouton est appuyé on applique les filtres
 if st.button("Appliquer les filtres"):
